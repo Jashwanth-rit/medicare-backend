@@ -1,25 +1,21 @@
 const express = require("express");
 const cors = require("cors");
-const bodyParser = require("body-parser");
+const dotenv = require("dotenv");
 const connectDB = require("./db");
 
-const express = require('express');
-const app = express();
-const bodyParser = require('body-parser');
-const dotenv = require('dotenv');
-const mongoose = require('mongoose');
-
+// Load environment variables
 dotenv.config();
 
-app.use(bodyParser.json());
+const app = express();
 
+// Middleware
+app.use(express.json()); // Using Express' built-in json() middleware instead of body-parser
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
+  origin: process.env.FRONTEND_URL, // Set CORS to accept requests from your frontend URL
 }));
 
 // Connect to MongoDB
 connectDB();
-
 
 // Import routes
 const reminderRoutes = require('./routes/reminderRoutes');
@@ -30,12 +26,6 @@ const ambulanceRoutes = require('./routes/ambulanceRoutes');
 const donationRoutes = require('./routes/donationRoutes');
 const authRoutes = require('./routes/authRoutes');
 
-// Load environment variables
-dotenv.config();
-
-// Middleware
-app.use(bodyParser.json());
-
 // Use routes
 app.use('/reminders', reminderRoutes);
 app.use('/fire-extinguishers', fireExtinguisherRoutes);
@@ -44,7 +34,6 @@ app.use('/healthcare-takers', healthcareTakerRoutes);
 app.use('/ambulances', ambulanceRoutes);
 app.use('/donations', donationRoutes);
 app.use('/auth', authRoutes);
-
 
 // Example route
 app.get('/', (req, res) => {
