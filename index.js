@@ -38,16 +38,31 @@ const Product = mongoose.model("Product", new mongoose.Schema({
   category: String
 }));
 
-const HealthcareTaker = mongoose.model("HealthcareTaker", new mongoose.Schema({
-  id: String, // Unique identifier for the healthcare taker
-  name: String, // Name of the healthcare taker
-  specialty: String, // Area of expertise or specialty
-  phone: String, // Contact number
-  email: String, // Email address
-  location: String, // Address or location
-  availability: String, // Availability details (e.g., "9 AM - 5 PM")
-  image: String // URL or path to the healthcare taker's image
-}));
+const HealthcareTakerSchema = new mongoose.Schema({
+  id: { type: String, required: true }, // Unique identifier for the healthcare taker
+  name: { type: String, required: true }, // Name of the healthcare taker
+  specialty: { type: String, required: true }, // Area of expertise or specialty
+  phone: { type: String, required: true }, // Contact number
+  email: { type: String, required: true }, // Email address
+  location: { type: String, required: true }, // Address or location
+  availability: { type: String, required: true }, // Availability details (e.g., "9 AM - 5 PM")
+  image: { type: String, required: true }, // URL or path to the healthcare taker's image
+  nearbyLocation: {
+    type: {
+      type: String, // GeoJSON type
+      enum: ["Point"], // Must be 'Point'
+      required: true,
+    },
+    coordinates: {
+      type: [Number], // Array of numbers: [longitude, latitude]
+      required: true,
+    },
+  },
+});
+
+HealthcareTakerSchema.index({ nearbyLocation: "2dsphere" }); // Create a geospatial index
+
+const HealthcareTaker = mongoose.model("HealthcareTaker", HealthcareTakerSchema);
 
 
 const PoliceInfo = mongoose.model("PoliceInfo", new mongoose.Schema({
@@ -179,9 +194,21 @@ const AmbulanceSchema = new mongoose.Schema({
   imageurl: { type: String, required: true },
   phoneNumber: { type: String, required: true }, // Contact number for the ambulance
   currentPlace: { type: String, required: true }, // Current location of the ambulance
-  availability: { type: Boolean, required: true },
- // Whether the ambulance is available or not
+  availability: { type: Boolean, required: true }, // Whether the ambulance is available or not
+  nearbyLocation: {
+    type: {
+      type: String, // GeoJSON type
+      enum: ["Point"], // Must be 'Point'
+      required: true,
+    },
+    coordinates: {
+      type: [Number], // Array of numbers: [longitude, latitude]
+      required: true,
+    },
+  },
 });
+
+AmbulanceSchema.index({ nearbyLocation: "2dsphere" }); // Create a geospatial index
 
 const Ambulance = mongoose.model("Ambulance", AmbulanceSchema);
 
@@ -201,8 +228,22 @@ const MedicalShopSchema = new mongoose.Schema({
   phoneNumber: { type: String, required: true }, // Contact number of the shop
   availability: { type: Boolean, required: true }, // Whether the shop is currently open
   openingHours: { type: String, required: true }, // Opening hours (e.g., "8 AM - 10 PM")
-  emergencyServices: { type: Boolean, default: false } // Indicates if emergency services are available
+  emergencyServices: { type: Boolean, default: false }, // Indicates if emergency services are available
+  nearbyLocation: {
+    type: {
+      type: String, // GeoJSON type
+      enum: ["Point"], // Must be 'Point'
+      required: true,
+    },
+    coordinates: {
+      type: [Number], // Array of numbers: [longitude, latitude]
+      required: true,
+    },
+  },
+  products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }], // List of available products
 });
+
+MedicalShopSchema.index({ nearbyLocation: "2dsphere" }); // Create a geospatial index
 
 const MedicalShop = mongoose.model("MedicalShop", MedicalShopSchema);
 
@@ -259,20 +300,23 @@ const DoctorBooked = mongoose.model("DoctorBooked", DoctorBookedSchema);
 
 
 
+
+
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
+    user: process.env.EMAIL_USER, // Email address
+    pass: process.env.EMAIL_PASS, // App password
+  },
 });
+
 
 
 app.post('/book', async (req, res) => {
   const { name, email, phone, specialty, location } = req.body;
 
   const mailOptions = {
-    from: 'your-email@gmail.com', // Your email
+    from: process.env.EMAIL_USER, // Your email
     to: email, // Doctor's email
     subject: `New Booking Request from ${name}`,
     text: `
@@ -285,7 +329,7 @@ app.post('/book', async (req, res) => {
       - Location: ${location}
       
       Please confirm the booking with the patient.
-    `
+    `,
   };
 
   try {
@@ -296,7 +340,6 @@ app.post('/book', async (req, res) => {
     res.status(500).send({ error: 'Error sending email' });
   }
 });
-
 
 
 const jwtkey = process.env.JWT_SECRET || "default-secret";
