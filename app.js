@@ -35,6 +35,7 @@ app.use('/ambulances', ambulanceRoutes);
 app.use('/donations', donationRoutes);
 app.use('/auth', authRoutes);
 
+
 // Example route
 app.get('/', (req, res) => {
   res.send('Welcome to the API');
