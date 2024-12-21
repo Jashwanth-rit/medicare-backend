@@ -1,5 +1,5 @@
 // controllers/carouselController.js
-const Carousel = require("../models/Carousel"); // Import the Carousel model
+const Carousel = require("../models/carousel"); // Import the Carousel model
 
 // Fetch carousel data with an optional limit
 const getCarouselData = async (req, res) => {

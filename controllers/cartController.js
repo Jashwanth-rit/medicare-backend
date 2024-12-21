@@ -1,5 +1,5 @@
 // controllers/cartController.js
-const Cart = require("../models/Cart");
+const Cart = require("../models/cart");
 
 // Add a new item to the cart
 const addToCart = async (req, res) => {

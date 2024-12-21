@@ -1,5 +1,5 @@
 // controllers/buyController.js
-const Buy = require("../models/Buy"); // Import the Buy model
+const Buy = require("../models/buy"); // Import the Buy model
 
 // Add a product to the "buy" collection
 const addProductToBuy = async (req, res) => {

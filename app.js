@@ -1,15 +1,23 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const connectDB = require("./db");
-
+const connectDB = require("./config/db");
+const bodyParser = require("body-parser");
 // Load environment variables
 dotenv.config();
 
 const app = express();
 
 // Middleware
-app.use(express.json()); // Using Express' built-in json() middleware instead of body-parser
+
+
+
+
+// Use built-in JSON middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+ // Using Express' built-in json() middleware instead of body-parser
 app.use(cors({
   origin: process.env.FRONTEND_URL, // Set CORS to accept requests from your frontend URL
 }));

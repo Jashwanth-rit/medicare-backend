@@ -1,6 +1,6 @@
 // controllers/authController.js
-const User = require('../models/User');
-const Seller = require('../models/Seller');
+const User = require('../models/user');
+const Seller = require('../models/seller');
 const jwt = require('jsonwebtoken');
 
 // User Signup

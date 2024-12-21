@@ -1,5 +1,5 @@
 // controllers/doctorController.js
-const Doctor = require("../models/Doctor");
+const Doctor = require("../models/doctor");
 const DoctorSession = require("../models/DoctorSession");
 
 // Fetch a specific doctor by ID
