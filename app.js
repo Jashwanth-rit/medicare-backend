@@ -25,6 +25,8 @@ const healthcareTakerRoutes = require('./routes/healthcareTakerRoutes');
 const ambulanceRoutes = require('./routes/ambulanceRoutes');
 const donationRoutes = require('./routes/donationRoutes');
 const authRoutes = require('./routes/authRoutes');
+const carouselRoutes = require("./routes/carouselRoutes");
+const productRoutes = require("./routes/productRoutes");
 
 // Use routes
 app.use('/reminders', reminderRoutes);
@@ -34,6 +36,9 @@ app.use('/healthcare-takers', healthcareTakerRoutes);
 app.use('/ambulances', ambulanceRoutes);
 app.use('/donations', donationRoutes);
 app.use('/auth', authRoutes);
+app.use("/carousel", carouselRoutes);
+app.use("/products", productRoutes);
+
 
 
 // Example route
