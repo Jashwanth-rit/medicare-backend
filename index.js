@@ -222,6 +222,39 @@ const DoctorSessionSchema = new mongoose.Schema({
 const DoctorSession = mongoose.model("DoctorSession", DoctorSessionSchema);
 
 
+const DoctorBookedSchema = new mongoose.Schema({
+  doctor: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'DoctorSession', 
+    required: true 
+  }, // Reference to the DoctorSession document
+  user: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User', 
+    required: true 
+  }, // Reference to the User who booked the session
+  timeSlot: { 
+    type: Date, 
+    required: true 
+  }, // Date and time of the booked session
+  status: {
+    type: String,
+    enum: ['Booked', 'Completed', 'Cancelled'],
+    default: 'Booked' // Status of the booking
+  },
+  createdAt: { 
+    type: Date, 
+    default: Date.now 
+  }, // Timestamp for when the booking was created
+  updatedAt: { 
+    type: Date, 
+    default: Date.now 
+  } // Timestamp for when the booking was last updated
+});
+
+const DoctorBooked = mongoose.model("DoctorBooked", DoctorBookedSchema);
+
+
 const jwtkey = process.env.JWT_SECRET || "default-secret";
 
 const verifyToken = (req, res, next) => {
