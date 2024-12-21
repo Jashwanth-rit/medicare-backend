@@ -19,7 +19,7 @@ router.post("/seller/signup", sellerSignup);
 router.post("/seller/login", sellerLogin);
 
 // Example protected route (optional, demonstrating verifyToken usage)
-router.get("/protected", verifyToken, (req, res) => {
+router.get("/protected", (req, res) => {
   res.status(200).send({ result: "Access granted", user: req.user });
 });
 

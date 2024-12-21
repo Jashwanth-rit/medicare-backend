@@ -27,6 +27,12 @@ const donationRoutes = require('./routes/donationRoutes');
 const authRoutes = require('./routes/authRoutes');
 const carouselRoutes = require("./routes/carouselRoutes");
 const productRoutes = require("./routes/productRoutes");
+const buyRoutes = require("./routes/buyRoutes");
+
+const doctorRoutes = require("./routes/doctorRoutes");
+const cartRoutes = require("./routes/cartRoutes");
+const orderRoutes = require("./routes/orderRoutes");
+
 
 // Use routes
 app.use('/reminders', reminderRoutes);
@@ -38,6 +44,11 @@ app.use('/donations', donationRoutes);
 app.use('/auth', authRoutes);
 app.use("/carousel", carouselRoutes);
 app.use("/products", productRoutes);
+app.use("/buy", buyRoutes);
+app.use("/doctors", doctorRoutes);
+app.use("/cart", cartRoutes);
+app.use("/order", orderRoutes);
+
 
 
 
