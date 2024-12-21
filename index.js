@@ -96,13 +96,13 @@ const Cart = mongoose.model("Cart", new mongoose.Schema({
 }));
 
 const OrderSchema = new mongoose.Schema({
-  id: { type: String, required: true },
+ 
   products: [
     {
-      id: { type: String, required: true },
+      id: { type: String},
       name: { type: String, required: true },
       price: { type: String, required: true },
-      description: { type: String, required: true },
+      description: { type: String},
       url: { type: String, required: true },
       category: { type: String, required: true },
     },
@@ -130,6 +130,7 @@ const PatientSchema = new mongoose.Schema({
   name: { type: String, required: true }, // Name of the patient
   disease: { type: String, required: true }, // Disease the patient is suffering from
   moneyRequired: { type: Number, required: true }, // Money required for treatment
+  url: { type: String, required: true },
   deadline: { type: Date, required: true }, // Deadline for the treatment
   place: { type: String, required: true }, // Place of the patient
   hospitals: { type: [String], required: true } // List of hospitals the patient is admitted in
