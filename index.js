@@ -4,6 +4,7 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
+const nodemailer = require('nodemailer');
 
 dotenv.config();
 
@@ -208,6 +209,7 @@ const MedicalShop = mongoose.model("MedicalShop", MedicalShopSchema);
 
 const DoctorSessionSchema = new mongoose.Schema({
   doctorName: { type: String, required: true }, // Name of the doctor
+  email: { type: String}, // Email of the doctor
   imageurl: { type: String, required: true }, // Image of the doctor
   age: { type: Number, required: true }, // Doctor's age
   fees: { type: Number, required: true }, // Consultation fees
@@ -254,6 +256,47 @@ const DoctorBookedSchema = new mongoose.Schema({
 });
 
 const DoctorBooked = mongoose.model("DoctorBooked", DoctorBookedSchema);
+
+
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+});
+
+
+app.post('/book', async (req, res) => {
+  const { name, email, phone, specialty, location } = req.body;
+
+  const mailOptions = {
+    from: 'your-email@gmail.com', // Your email
+    to: email, // Doctor's email
+    subject: `New Booking Request from ${name}`,
+    text: `
+      You have received a booking request.
+
+      Details:
+      - Name: ${name}
+      - Specialty: ${specialty}
+      - Phone: ${phone}
+      - Location: ${location}
+      
+      Please confirm the booking with the patient.
+    `
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    res.status(200).send({ message: 'Email sent successfully!' });
+  } catch (error) {
+    console.error('Error sending email:', error);
+    res.status(500).send({ error: 'Error sending email' });
+  }
+});
+
 
 
 const jwtkey = process.env.JWT_SECRET || "default-secret";
