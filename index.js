@@ -154,7 +154,7 @@ const Buy = mongoose.model("Buy", new mongoose.Schema({
   price: { type: String, required: true },
   name: { type: String, required: true },
   url: { type: String, required: true },
-  description: { type: String, required: true },
+  description: { type: String },
   category: { type: String, required: true },
 }));
 
