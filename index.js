@@ -404,6 +404,17 @@ app.post("/products", async (req, res) => {
   }
 });
 
+app.post('/buy', async (req, res) => {
+  try {
+    const product = new Buy(req.body); // Create a new Buy object with the request body
+    await product.save(); // Save the product to the database
+    res.status(201).send(product); // Send a success response with the created product
+  } catch (error) {
+    console.error("Error adding product to Buy database", error);
+    res.status(400).send({ error: "Error adding product" }); // Send an error response
+  }
+});
+
 
 // Get all products from the "buy" collection
 app.get('/buy', async (req, res) => {
