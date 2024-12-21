@@ -380,6 +380,89 @@ app.post("/user/login", async (req, res) => {
   }
 });
 
+app.get('/medical-shops/nearby', async (req, res) => {
+  const { longitude, latitude, maxDistance = 5000 } = req.query;
+
+  if (!longitude || !latitude) {
+    return res.status(400).json({ error: 'Longitude and latitude are required' });
+  }
+
+  try {
+    const nearbyShops = await MedicalShop.find({
+      nearbyLocation: {
+        $near: {
+          $geometry: {
+            type: 'Point',
+            coordinates: [parseFloat(longitude), parseFloat(latitude)],
+          },
+          $maxDistance: parseInt(maxDistance, 10), // Max distance in meters
+        },
+      },
+    });
+
+    res.status(200).json(nearbyShops);
+  } catch (err) {
+    console.error('Error fetching nearby medical shops:', err);
+    res.status(500).json({ error: 'Failed to fetch nearby medical shops', details: err.message });
+  }
+});
+
+app.get('/healthcare-takers/nearby', async (req, res) => {
+  const { longitude, latitude, maxDistance = 5000 } = req.query;
+
+  if (!longitude || !latitude) {
+    return res.status(400).json({ error: 'Longitude and latitude are required' });
+  }
+
+  try {
+    const nearbyTakers = await HealthcareTaker.find({
+      nearbyLocation: {
+        $near: {
+          $geometry: {
+            type: 'Point',
+            coordinates: [parseFloat(longitude), parseFloat(latitude)],
+          },
+          $maxDistance: parseInt(maxDistance, 10), // Max distance in meters
+        },
+      },
+    });
+
+    res.status(200).json(nearbyTakers);
+  } catch (err) {
+    console.error('Error fetching nearby healthcare takers:', err);
+    res.status(500).json({ error: 'Failed to fetch nearby healthcare takers', details: err.message });
+  }
+});
+
+
+app.get('/ambulances/nearby', async (req, res) => {
+  const { longitude, latitude, maxDistance = 5000 } = req.query;
+
+  if (!longitude || !latitude) {
+    return res.status(400).json({ error: 'Longitude and latitude are required' });
+  }
+
+  try {
+    const nearbyAmbulances = await Ambulance.find({
+      nearbyLocation: {
+        $near: {
+          $geometry: {
+            type: 'Point',
+            coordinates: [parseFloat(longitude), parseFloat(latitude)],
+          },
+          $maxDistance: parseInt(maxDistance, 10), // Max distance in meters
+        },
+      },
+    });
+
+    res.status(200).json(nearbyAmbulances);
+  } catch (err) {
+    console.error('Error fetching nearby ambulances:', err);
+    res.status(500).json({ error: 'Failed to fetch nearby ambulances', details: err.message });
+  }
+});
+
+
 app.get('/reminders', async (req, res) => {
   try {
     const reminders = await Reminder.find();
