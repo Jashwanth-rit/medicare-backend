@@ -143,13 +143,13 @@ const OrderSchema = new mongoose.Schema({
 const Order = mongoose.model("Order", OrderSchema);
 
 const PatientSchema = new mongoose.Schema({
-  name: { type: String, required: true }, // Name of the patient
-  disease: { type: String, required: true }, // Disease the patient is suffering from
-  moneyRequired: { type: Number, required: true }, // Money required for treatment
-  url: { type: String, required: true },
-  deadline: { type: Date, required: true }, // Deadline for the treatment
-  place: { type: String, required: true }, // Place of the patient
-  hospitals: { type: [String], required: true } // List of hospitals the patient is admitted in
+  name: { type: String}, // Name of the patient
+  disease: { type: String}, // Disease the patient is suffering from
+  moneyRequired: { type: Number}, // Money required for treatment
+  url: { type: String}, // URL of the patient's image
+  deadline: { type: Date}, // Deadline for the treatment
+  place: { type: String }, // Place of the patient
+  hospitals: { type: [String] } // List of hospitals the patient is admitted in
 });
 
 const Patient = mongoose.model("Patient", PatientSchema);
@@ -190,20 +190,20 @@ const Seller = mongoose.model("Seller", new mongoose.Schema({
 }));
 
 const AmbulanceSchema = new mongoose.Schema({
-  vehicleNumber: { type: String, required: true }, // Unique number or identifier for the ambulance
-  imageurl: { type: String, required: true },
-  phoneNumber: { type: String, required: true }, // Contact number for the ambulance
-  currentPlace: { type: String, required: true }, // Current location of the ambulance
-  availability: { type: Boolean, required: true }, // Whether the ambulance is available or not
+  vehicleNumber: { type: String }, // Unique number or identifier for the ambulance
+  imageurl: { type: String},
+  phoneNumber: { type: String}, // Contact number for the ambulance
+  currentPlace: { type: String}, // Current location of the ambulance
+  availability: { type: Boolean}, // Whether the ambulance is available or not
   nearbyLocation: {
     type: {
       type: String, // GeoJSON type
       enum: ["Point"], // Must be 'Point'
-      required: true,
+    
     },
     coordinates: {
       type: [Number], // Array of numbers: [longitude, latitude]
-      required: true,
+     
     },
   },
 });
@@ -223,11 +223,11 @@ const ImageSchema = new mongoose.Schema({
 const Image = mongoose.model("Image", ImageSchema);
 
 const MedicalShopSchema = new mongoose.Schema({
-  shopName: { type: String, required: true }, // Name of the medical shop
-  address: { type: String, required: true }, // Address of the shop
-  phoneNumber: { type: String, required: true }, // Contact number of the shop
-  availability: { type: Boolean, required: true }, // Whether the shop is currently open
-  openingHours: { type: String, required: true }, // Opening hours (e.g., "8 AM - 10 PM")
+  shopName: { type: String }, // Name of the medical shop
+  address: { type: String }, // Address of the shop
+  phoneNumber: { type: String }, // Contact number of the shop
+  availability: { type: Boolean}, // Whether the shop is currently open
+  openingHours: { type: String}, // Opening hours (e.g., "8 AM - 10 PM")
   emergencyServices: { type: Boolean, default: false }, // Indicates if emergency services are available
   nearbyLocation: {
     type: {
@@ -249,17 +249,17 @@ const MedicalShop = mongoose.model("MedicalShop", MedicalShopSchema);
 
 
 const DoctorSessionSchema = new mongoose.Schema({
-  doctorName: { type: String, required: true }, // Name of the doctor
+  doctorName: { type: String }, // Name of the doctor
   email: { type: String}, // Email of the doctor
-  imageurl: { type: String, required: true }, // Image of the doctor
-  age: { type: Number, required: true }, // Doctor's age
-  fees: { type: Number, required: true }, // Consultation fees
+  imageurl: { type: String }, // Image of the doctor
+  age: { type: Number, }, // Doctor's age
+  fees: { type: Number,}, // Consultation fees
   category: { 
     type: String, 
-    required: true, 
+    
     enum: ["Physical Treatment", "Mental Health", "Suggestions", "Precautions","Pregnency"] 
   }, // Category of the session
-  availability: { type: Boolean, required: true }, // Whether the doctor is available
+  availability: { type: Boolean, }, // Whether the doctor is available
   createdAt: { type: Date, default: Date.now } // Timestamp for session creation
 });
 
