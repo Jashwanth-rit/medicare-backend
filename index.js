@@ -407,6 +407,19 @@ app.get('/medical-shops/nearby', async (req, res) => {
   }
 });
 
+
+app.post("/healthcareTakers", async (req, res) => {
+  try {
+    const healthcareTaker = new HealthcareTaker(req.body);
+    await healthcareTaker.save();
+    res.status(201).send(healthcareTaker);
+  } catch (error) {
+    console.error("Error adding healthcare taker", error);
+    res.status(400).send({ error: "Error adding healthcare taker" });
+  }
+});
+
+
 app.get('/healthcare-takers/nearby', async (req, res) => {
   const { longitude, latitude, maxDistance = 5000 } = req.query;
 
@@ -462,6 +475,32 @@ app.get('/ambulances/nearby', async (req, res) => {
   }
 });
 
+
+app.post("/patients", async (req, res) => {
+  try {
+    const patient = new Patient(req.body);
+    await patient.save();
+    res.status(201).send(patient);
+  } catch (error) {
+    console.error("Error adding patient", error);
+    res.status(400).send({ error: "Error adding patient" });
+  }
+});
+
+
+// POST Route to Add Ambulance
+app.post("/ambulances", async (req, res) => {
+  try {
+    const ambulanceData = req.body;
+    // Create a new ambulance instance using the received data
+    const ambulance = new Ambulance(ambulanceData);
+    await ambulance.save();  // Save the ambulance to the database
+    res.status(201).send(ambulance);  // Send the added ambulance as response
+  } catch (error) {
+    console.error("Error adding ambulance:", error);
+    res.status(400).send({ error: "Error adding ambulance" });
+  }
+});
 
 app.get('/reminders', async (req, res) => {
   try {
@@ -573,6 +612,19 @@ app.post("/products", async (req, res) => {
     res.status(400).send({ error: "Error adding product" });
   }
 });
+
+// server.js (or wherever your routes are defined)
+app.post("/doctors", async (req, res) => {
+  try {
+    const doctor = new DoctorSession(req.body);
+    await doctor.save();
+    res.status(201).send(doctor);
+  } catch (error) {
+    console.error("Error adding doctor", error);
+    res.status(400).send({ error: "Error adding doctor" });
+  }
+});
+
 
 app.post('/buy', async (req, res) => {
   try {
